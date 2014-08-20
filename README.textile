@@ -2,5 +2,7 @@ Copy the folder in your webserver or even in a S3 bucket and access the index fi
 
 All configurations are in the s3album.js file 
 
+This uses Google authentication 
+
 have fun.
 
