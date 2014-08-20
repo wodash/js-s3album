@@ -1,0 +1,203 @@
+/* Common Settings (Start)*/
+
+@import url(http://fonts.googleapis.com/css?family=Lato:300,400,700);
+ *,
+*:after,
+*::before {
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+body {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 1em;
+    /*font-family: 'Lucida Grande', 'Lucida Sans Unicode', Arial, sans-serif;*/
+    font-family: 'Lato', Calibri, Arial, sans-serif;
+    font-size: 1em;
+    line-height: 1.4em;
+    background: #222;
+    color: #fff;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+}
+.expandable-panel {
+    position: relative;
+    overflow: auto;
+    display: block;
+}
+.expandable-panel-content {
+    padding: 0 15px;
+    display: block;
+    overflow: hidden;
+    margin-top: -999;
+}
+button {
+    border: none;
+    padding: 0.6em 1.2em;
+    background: #388a5a;
+    color: #fff;
+    font-family: 'Lato', Calibri, Arial, sans-serif;
+    font-size: 1em;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: inline-block;
+    margin: 3px 2px;
+    border-radius: 2px;
+}
+button:hover {
+    background: #2c774b;
+}
+button:focus {
+    background: #df774b;
+}
+button.signoff {
+    background: #DE5C5C;
+    padding: 0.3em 0.6em;
+}
+#content {
+    margin-top: 100px;
+}
+/* Common Settings (End)*/
+
+/* Album list Settings (Start)*/
+
+#albumListContainer {
+    background: #555E49;
+    width: 93%;
+    display: none;
+}
+.column {
+    width: 100%;
+    min-width: auto;
+    min-height: auto;
+    padding: 2em;
+    text-align: center;
+    font-size: 80%;
+    min-height: 0;
+}
+.column:nth-child(2) {
+    box-shadow: -1px 0 0 rgba(0, 0, 0, 0.1);
+    /*text-align: left;*/
+    text-align: center;
+}
+/* Album list Settings (End)*/
+
+/* Profile Settings (Start)*/
+
+#profileDataContainer {
+    background: #595546;
+    width: 93%;
+    float: right;
+    display: none;
+}
+#userID {
+    margin: 3px;
+    text-align: right;
+}
+#email {
+    color: #ddd;
+}
+#signoffButton {
+    cursor: pointer;
+    margin: 3px;
+    text-align: right;
+}
+/* Profile Settings (End)*/
+
+/* Gallery (Start)*/
+
+#album-gallery {
+    display: none;
+}
+.gallery-nav {
+    text-align: center;
+}
+#more {
+    float: right;
+}
+#more:disabled {
+    float: right;
+    background: grey;
+    color: darkgrey;
+}
+#pages {
+    display: inline-flex;
+    float: left;
+}
+img {
+    border: 0;
+    margin: 2px;
+    vertical-align: middle;
+    height: 70px;
+}
+h1 {
+    line-height: 1em;
+}
+.links {
+    text-align: center;
+}
+/* Gallery (End)*/
+
+/* Others (Start)*/
+
+#login-page {
+    display: block;
+    margin: auto;
+    padding: 5px;
+    width: 60%;
+    text-align: center;
+    background-color: #333;
+}
+#welcome-page {
+    display: none;
+    margin: auto;
+    padding: 5px;
+    width: 60%;
+    text-align: center;
+    background-color: #333;
+}
+#loader {
+    height: 18px;
+}
+#oops {
+    font-size: 1.2em;
+    color: #f55;
+}
+/* Others (End)*/
+
+/* Top Bar (Start) */
+
+#TopBar {
+    width: 100%;
+}
+#spacing {
+    height: 2px;
+    background: #222;
+    width: 100%;
+}
+img.profile {
+    height: 48px;
+    width: 48px;
+    margin: 0;
+}
+.menu-icon {
+    display: block;
+    background: transparent url('../img/menu-sprite.svg') no-repeat;
+    background-size: auto 100%;
+    height: 3em;
+    width: 3em;
+    cursor: pointer;
+    float: left;
+    background-color: #555;
+    /*background-color: #696;*/
+}
+.profile-pic {
+    float: right;
+}
+/* Top Bar (End) */
+
+#status {
+    display: block;
+    color: #e77;
+}

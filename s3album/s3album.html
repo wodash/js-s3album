@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>S3 album</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.0.4.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/s3album.css">
+    <link rel="stylesheet" href="css/blueimp-gallery.css">
+    <script src="js/s3album.js"></script>
+</head>
+
+<body>
+    <div id="TopBar" style="margin: auto;">
+        <a id="nav-trigger" onclick="toggleAlbumPanel()"><i class="menu-icon"></i></a>
+        <a id="nav-profile" style="float:right" onclick="toggleProfilePanel()"></a>
+    </div>
+    <div id="expandable">
+        <div id="profileDataContainer" class="expandable-panel">
+            <div class="expandable-panel-content ">
+                <div id="userID"></div>
+                <div id="signoffButton" onclick='signoffButton()'>
+                    <button class="signoff">Sign Off</button>
+                </div>
+            </div>
+        </div>
+        <div id="albumListContainer" class="expandable-panel">
+            <div class="expandable-panel-content">
+                <div id="album-list" class="column">
+                    <!--<button data-effect="st-effect-1">Slide in on top</button>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="content">
+        <div id="login-page">
+            <p>Hi,</p>
+            <p>Welcome to Wodash's s3albums!</p>
+            <p>Please login using your Google ID</p>
+            <span id="signinButton">
+                <span
+                class="g-signin"
+                data-callback="signinCallback"
+                data-clientid="224140495108-19b3h0e08gu4i2o1aqjo5m7sqotkihao.apps.googleusercontent.com"
+                data-cookiepolicy="single_host_origin"
+                data-requestvisibleactions="http://schema.org/AddAction"
+                data-scope="https://www.googleapis.com/auth/plus.login email"
+                </span>
+            </span>
+        </div>
+        <div id="welcome-page">
+            <div id="welcome">
+                <p id="wait">Please wait while we load your albums...</p>
+                <div>
+                    <img id="loader" src="/img/22.GIF">
+                </div>
+            </div>
+            <div id=status>
+            </div>
+        </div>
+        <div id="album-gallery">
+            <h1 id="album-name">Gallery</h1>
+            <br>
+            <div id="links" class="links"></div>
+            <div id="blueimp-gallery" class="blueimp-gallery">
+                <div class="slides"></div>
+            </div>
+            <div class="gallery-nav">
+                <div id="pages"></div>
+                <button id="more" onClick="buttonClicked(this)" disabled>More...</button>
+            </div>
+        </div>
+    </div>
+    <script src="js/blueimp-helper.js"></script>
+    <script src="js/blueimp-gallery.js"></script>
+    <script src="js/jquery.blueimp-gallery.js"></script>
+</body>
+
+</html>

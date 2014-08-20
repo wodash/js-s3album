@@ -1,0 +1,4 @@
+<myAlbums>
+    <album id="1" name="Album Name" thumbs="Path to thumbs folder" large="Path to large images folder"/>
+    <album id="2" name="Album name 2"/>
+</myAlbums>
