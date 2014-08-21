@@ -6,3 +6,18 @@ This uses Google authentication
 
 have fun.
 
+
+
+Requirments:
+
+Amazon S3:
+
+    - A bucket in amazon S3
+    - Region in which the bucket is located
+    - CORS setting for the Bucket (if the website is not hosted in the bucket itself)
+    - ARN configuration (A Role which has access to your photos, and integrated with google authentication)in Amazon IAM
+    
+Google Dev:
+
+    - An App in google dev (This will be used to authenticate users)
+    - 
