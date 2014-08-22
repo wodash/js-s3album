@@ -20,4 +20,28 @@ Amazon S3:
 Google Dev:
 
     - An App in google dev (This will be used to authenticate users)
-    - 
+    
+User specific XML:
+
+    - since we are not using any DB for maintaining user information, we will use the age old yet still functional 'portalble DB' AKA xml
+    - create a folder called 'users' in the same Bucket as your albums, in this folder create XML per user for whome you want to allow access.
+        - this can me modified in the code as per your needs
+    - XML name should be in the format email.id@example.com.xml (This is a perfectly valid file name)
+        - this can me modified as per your needs
+    - XML structure is as follows
+        -   <myAlbums>
+                <album 	id="1"
+                        name="Gallery1"                         <!-- Name of the gallery : used to create Gallery buttons on the site -->
+                        thumbs="myAlbums/Gallery1/_T/"          <!-- Path from the root of the bucket to Thumbnails : Used for lightbox -->
+                        large="myAlbums/Gallery1/_L/" />        <!-- Path from the root of the bucket to Large images : used for slides -->
+                <album 	id="2" 
+                        name="Gallery2" 
+                        thumbs="myAlbums/Gallery2/_T/" 
+                        large="myAlbums/Gallery2/_L/" />
+            </myAlbums>
+
+Image File name format:
+    
+    - Image file name for Thumbnails should be: image_T(.jpg or any other format)
+    - Image file name for Large images should be: image_L(.jpg or any other format)
+    
