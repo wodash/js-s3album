@@ -26,7 +26,7 @@ body {
     display: block;
 }
 .expandable-panel-content {
-    padding: 0 15px;
+    /*padding: 0 15px;*/
     display: block;
     overflow: hidden;
     margin-top: -999;

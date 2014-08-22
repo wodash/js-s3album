@@ -1,9 +1,9 @@
 var Google_App_Token = null;
 var AWS_Bucket_Obj = null;
 var AWS_RoleArn = 'arn:aws:iam::334172838169:role/Test_Role';
-var AWS_Region = 'ap-southeast-1';
-var AWS_BucketName = 'wod-photos-all';
-var AWS_MaxKeys = 10;
+var AWS_Region = 'us-east-1';
+var AWS_BucketName = 'wod-photo-album';
+var AWS_MaxKeys = 30;
 var AWS_SignedUrl_Expires = 900;
 var AWS_Marker = null;
 var AWS_Data = null;
@@ -93,7 +93,7 @@ function loadAlbums() {
     }, function (err, url) {
         if (err) {
             console.log(err, err.stack); // an error occurred
-            $('#wait').replaceWith("Some thing went wrong, Please reload the page.");
+            updateStatus('error', 'red', false);
         } else {
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.open("GET", url, false);
@@ -115,15 +115,14 @@ function loadAlbumObj(albumName) {
         Marker: AWS_Marker
     }, function (err, data) {
         if (err) {
-            updateStatus('loadError');
+            updateStatus('loadError', 'red', false);
             console.log(err);
         } else {
             AWS_Data = data;
             setTimeout(function () {
                 loadGallery(albumName);
             }, 0);
-            $('#status').empty();
-
+            updateStatus('empty', 'yellow', false);
         }
     });
 }
@@ -153,15 +152,13 @@ function xmlParser(xmlDoc) {
             myAlbums[albumName].Large = node[len].getAttribute('large');
         }
     }
-    console.log(jQuery.isEmptyObject(myAlbums));
     if (!jQuery.isEmptyObject(myAlbums)) {
 
         setTimeout(function () {
             showAlbumList();
         }, 0);
     } else {
-        updateStatus('noAlbums');
-        //$('#welcome-page').css('display', 'none');
+        updateStatus('noAlbums', 'yellow', false);
     }
 }
 
@@ -202,16 +199,19 @@ function resetGallery(albumName) {
     $('#album-name').empty();
     $('#album-name').append(albumName);
     $('#album-gallery').css('display', 'block');
+    $('#links').empty();
     $('#pages').empty();
+    updateStatus('galleryWait', 'green', true);
 }
 
 function loadGallery(albumName) {
+    updateStatus('empty', 'white', false);
     var linksContainer = $('#links');
     linksContainer.empty();
     for (var i = 1; i < AWS_Data.Contents.length; i++) {
         $('<a/>')
             .append($('<img>').prop('src', getObjectUrl(AWS_Data.Contents[i].Key)))
-            .prop('href', getObjectUrl(AWS_Data.Contents[i].Key.replace(myAlbums[albumName].Thumbs, myAlbums[albumName].Large)))
+            .prop('href', getObjectUrl(AWS_Data.Contents[i].Key.replace(myAlbums[albumName].Thumbs, myAlbums[albumName].Large).replace('_T.', '_L.')))
             .prop('title', '')
             .attr('data-gallery', '')
             .appendTo(linksContainer);
@@ -239,17 +239,50 @@ function welcomePage() {
 
 /*-------------------- Generic (End)----------------------*/
 
-function updateStatus(code) {
+function updateStatus(code, color, loader) {
+    $('#welcome-page').css('display', 'block');
     var statusDiv = $('#status');
-    $('#welcome').css('display', 'none');
     statusDiv.empty();
-    if (code == 'noAlbums') {
+
+    switch (code) {
+    case 'noAlbums':
         statusDiv.append($('<p>Opps! looks like you dont have access to any albums!<br>please login using a different &nbsp Google ID &nbsp or contact the admin at &nbsp <a id="email"> shadow.on.fire@gmail.com </a></p>'));
-    } else if (code == 'loadError') {
+        break;
+    case 'loadError':
         statusDiv.append($('<p>Could not load objects from S3!,<br>Please reload the page or contact the &nbsp <a id="email" href="mailto:shadow.on.fire@gmail.com"> Admin </a></p>'));
-    } else {
+        break;
+    case 'albumSelect':
+        statusDiv.append($('<p>please select an album...</p>'));
+        break;
+    case 'galleryWait':
+        statusDiv.append($('<p>Please wait while the gallery is loaded...</p>'));
+        break;
+    case 'empty':
+        $('#welcome-page').css('display', 'none');
+        break;
+    default:
         statusDiv.append($('<p>There seems to be some problem...<br>Please reload the page or contact the &nbsp <a id="email" href="mailto:shadow.on.fire@gmail.com"> Admin </a></p>'));
+        break;
     }
+
+    color = color.toLocaleUpperCase();
+    switch (color) {
+    case 'RED':
+        statusDiv.css('color', '#e77');
+        break;
+    case 'GREEN':
+        statusDiv.css('color', '#696');
+        break;
+    default:
+        statusDiv.css('color', color);
+        break;
+
+    }
+
+    if (loader === false)
+        $('#loader').hide();
+    else
+        $('#loader').show();
 }
 
 /*-------------------- Generic (End)----------------------*/
@@ -282,60 +315,57 @@ function signoffButton() {
 /*-------------------- EXPANDABLE PANELS  (Start)----------------------*/
 //panel animate speed in milliseconds 
 var accordian = false; //set panels to behave like an accordian, with one panel only ever open at once      
-var listPanelheight, dataPanelheight;
+var albumPanelheight, profilePanelheight;
 
 //Initialise collapsible panels
 
 function profilePanelInit() {
     $('#profileDataContainer').css('display', 'block');
-    dataPanelheight = parseInt($('#profileDataContainer').find('.expandable-panel-content').css('height')) + 2;
-    $('#profileDataContainer').find('.expandable-panel-content').css('margin-top', -dataPanelheight);
+    profilePanelheight = parseInt($('#profileDataContainer').find('.expandable-panel-content').css('height')) + 2;
+    $('#profileDataContainer').find('.expandable-panel-content').css('margin-top', -profilePanelheight);
 }
 
 function albumListPanelInit() {
     $('#albumListContainer').css('display', 'block');
-    listPanelheight = parseInt($('#albumListContainer').find('.expandable-panel-content').css('height'));
-    $('#albumListContainer').find('.expandable-panel-content').css('margin-top', -listPanelheight);
+    albumPanelheight = parseInt($('#albumListContainer').find('.expandable-panel-content').css('height'));
+    $('#albumListContainer').find('.expandable-panel-content').css('margin-top', -albumPanelheight);
     $('.menu-icon').css('background-color', '#696');
-    $('#welcome-page').css('display', 'none');
+    updateStatus('albumSelect', 'green', false);
+
     setTimeout(function () {
         toggleAlbumPanel();
     }, 500);
 }
 
 function toggleAlbumPanel() {
-    console.log('profil data margin : ' + parseInt($('#profileDataContainer').find('.expandable-panel-content').css('margin-top')));
     if (parseInt($('#profileDataContainer').find('.expandable-panel-content').css('margin-top')) === 0) {
         toggleProfilePanel();
     }
     var obj = $('#albumListContainer').find('.expandable-panel-content');
-    toggle(obj, listPanelheight);
+    toggle(obj, albumPanelheight);
 }
 
 function toggleProfilePanel() {
-    console.log('album list margin : ' + parseInt($('#albumListContainer').find('.expandable-panel-content').css('margin-top')));
     if (parseInt($('#albumListContainer').find('.expandable-panel-content').css('margin-top')) === 0) {
         if ($('#albumListContainer').css('display') != 'none') {
             toggleAlbumPanel();
         }
     }
     var obj = $('#profileDataContainer').find('.expandable-panel-content');
-    toggle(obj, dataPanelheight);
+    toggle(obj, profilePanelheight);
 }
 
 function toggle(obj, height) {
     var panelspeed = 200;
+    obj.clearQueue();
+    obj.stop();
     if (parseInt(obj.css('margin-top')) < 0) {
-        obj.clearQueue();
-        obj.stop();
         obj.animate({
-            'margin-top': 0
+            'margin-top': 0,
         }, panelspeed);
     } else {
-        obj.clearQueue();
-        obj.stop();
         obj.animate({
-            'margin-top': (height * -1)
+            'margin-top': (height * -1),
         }, panelspeed);
     }
 }
