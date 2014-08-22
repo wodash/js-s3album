@@ -20,25 +20,30 @@
     <div id="expandable">
         <div id="profileDataContainer" class="expandable-panel">
             <div class="expandable-panel-content ">
+               <br>
                 <div id="userID"></div>
                 <div id="signoffButton" onclick='signoffButton()'>
                     <button class="signoff">Sign Off</button>
                 </div>
+                <hr>
             </div>
         </div>
         <div id="albumListContainer" class="expandable-panel">
             <div class="expandable-panel-content">
                 <div id="album-list" class="column">
-                    <!--<button data-effect="st-effect-1">Slide in on top</button>-->
                 </div>
+                <hr>
             </div>
         </div>
     </div>
     <div id="content">
         <div id="login-page">
+            <hr>
             <p>Hi,</p>
             <p>Welcome to Wodash's s3albums!</p>
             <p>Please login using your Google ID</p>
+            <hr>
+            <br>
             <span id="signinButton">
                 <span
                 class="g-signin"
@@ -49,6 +54,7 @@
                 data-scope="https://www.googleapis.com/auth/plus.login email"
                 </span>
             </span>
+
         </div>
         <div id="welcome-page">
             <div id="welcome">
@@ -60,11 +66,13 @@
         </div>
         <div id="album-gallery">
             <h1 id="album-name">Gallery</h1>
+            <hr>
             <br>
             <div id="links" class="links"></div>
             <div id="blueimp-gallery" class="blueimp-gallery">
                 <div class="slides"></div>
             </div>
+            <br>
             <div class="gallery-nav">
                 <div id="pages"></div>
                 <button id="more" onClick="buttonClicked(this)" disabled>More...</button>

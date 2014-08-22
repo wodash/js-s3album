@@ -1,6 +1,6 @@
 /* Common Settings (Start)*/
 
-@import url(https://fonts.googleapis.com/css?family=Lato:300,400,700);
+@import url(http://fonts.googleapis.com/css?family=Josefin+Slab:400,700italic);
  *,
 *:after,
 *::before {
@@ -9,13 +9,15 @@
 }
 body {
     max-width: 1000px;
+    height: 100%;
     margin: 0 auto;
     padding: 1em;
-    /*font-family: 'Lucida Grande', 'Lucida Sans Unicode', Arial, sans-serif;*/
-    font-family: 'Lato', Calibri, Arial, sans-serif;
+    font-family: 'Josefin Slab', 'Lato', Calibri, Arial, sans-serif;
     font-size: 1em;
     line-height: 1.4em;
     background: #222;
+    background-image: url('../img/carbon_fibre.png');
+    background-repeat: repeat;
     color: #fff;
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
@@ -26,7 +28,6 @@ body {
     display: block;
 }
 .expandable-panel-content {
-    /*padding: 0 15px;*/
     display: block;
     overflow: hidden;
     margin-top: -999;
@@ -36,7 +37,7 @@ button {
     padding: 0.6em 1.2em;
     background: #388a5a;
     color: #fff;
-    font-family: 'Lato', Calibri, Arial, sans-serif;
+    font-family: 'Josefin Slab', 'Lato', Calibri, Arial, sans-serif;
     font-size: 1em;
     letter-spacing: 1px;
     text-transform: uppercase;
@@ -49,22 +50,34 @@ button:hover {
     background: #2c774b;
 }
 button:focus {
-    background: #df774b;
+    background: #8a8a8a;
 }
 button.signoff {
-    background: #DE5C5C;
+    background-color: #DF5F5F;
+    padding: 0.3em 0.6em;
+}
+button.signoff:hover {
+    background-color: #FF5F5F;
     padding: 0.3em 0.6em;
 }
 #content {
     margin-top: 100px;
+}
+hr {
+    border: 0;
+    height: 1px;
+    background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, 0), rgba(160, 160, 160, 0.75), rgba(0, 0, 0, 0));
+    background-image: -moz-linear-gradient(left, rgba(0, 0, 0, 0), rgba(160, 160, 160, 0.75), rgba(0, 0, 0, 0));
+}
+p{
+    font-size: 1.4em;
 }
 /* Common Settings (End)*/
 
 /* Album list Settings (Start)*/
 
 #albumListContainer {
-    background: #555E49;
-    width: 93%;
+    width: 100%;
     display: none;
 }
 .column {
@@ -77,8 +90,6 @@ button.signoff {
     min-height: 0;
 }
 .column:nth-child(2) {
-    box-shadow: -1px 0 0 rgba(0, 0, 0, 0.1);
-    /*text-align: left;*/
     text-align: center;
 }
 /* Album list Settings (End)*/
@@ -86,22 +97,24 @@ button.signoff {
 /* Profile Settings (Start)*/
 
 #profileDataContainer {
-    background: #595546;
-    width: 93%;
+    width: 100%;
     float: right;
     display: none;
 }
 #userID {
     margin: 3px;
     text-align: right;
+    font-size: 1.4em;
 }
 #email {
     color: #ddd;
+    font-size: 1.2em;
 }
 #signoffButton {
     cursor: pointer;
     margin: 3px;
     text-align: right;
+    padding-bottom: 2em;
 }
 /* Profile Settings (End)*/
 
@@ -147,7 +160,8 @@ h1 {
     padding: 5px;
     width: 60%;
     text-align: center;
-    background-color: #333;
+    /*background-color: #333;*/
+    color: silver;
 }
 #welcome-page {
     display: none;
@@ -155,7 +169,8 @@ h1 {
     padding: 5px;
     width: 60%;
     text-align: center;
-    background-color: #333;
+    /*background-color: #333;
+    opacity: 0.8;*/
 }
 #loader {
     height: 18px;
@@ -180,6 +195,7 @@ img.profile {
     height: 48px;
     width: 48px;
     margin: 0;
+    cursor: pointer;
 }
 .menu-icon {
     display: block;
@@ -190,7 +206,6 @@ img.profile {
     cursor: pointer;
     float: left;
     background-color: #555;
-    /*background-color: #696;*/
 }
 .profile-pic {
     float: right;
@@ -199,5 +214,11 @@ img.profile {
 
 #status {
     display: block;
-    color: #e77;
+    color: #696;
 }
+#wrapper {
+    min-height:100%;
+	position:relative;
+}
+
+

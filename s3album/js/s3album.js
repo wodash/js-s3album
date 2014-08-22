@@ -56,9 +56,9 @@ function gplusProfile() {
                 primaryEmail = profile.emails[i].value;
         }
         $('#userID').empty();
-        $('#nav-profile').append($('<img class=\"profile\" src=\"' + profile.image.url + '\">'));
+        $('#nav-profile').append($('<img class="profile" src="' + profile.image.url + '">'));
         $('#userID').append($('<div>' + profile.displayName + '</div>'));
-        $('#userID').append($('<div id=\"email\">' + primaryEmail + '</div>'));
+        $('#userID').append($('<div id="email" style="font-size: 1.0em">' + primaryEmail + '</div>'));
     });
     setTimeout(function () {
         profilePanelInit();
@@ -158,13 +158,13 @@ function xmlParser(xmlDoc) {
             showAlbumList();
         }, 0);
     } else {
-        updateStatus('noAlbums', 'yellow', false);
+        updateStatus('noAlbums', 'gold', false);
     }
 }
 
 function showAlbumList() {
     for (var albumName in myAlbums) {
-        $('#album-list').append($('<button id=\"' + albumName + '\" onClick="buttonClicked(this)">' + albumName + '</button>'));
+        $('#album-list').append($('<button id="' + albumName + '" onClick="buttonClicked(this)">' + albumName + '</button>'));
     }
     setTimeout(function () {
         albumListPanelInit();
@@ -219,7 +219,7 @@ function loadGallery(albumName) {
     if (pages.indexOf(AWS_Data.Marker) < 0) {
         currentPage = pages.push(AWS_Data.Marker);
         marker = AWS_Data.NextMarker;
-        $('#pages').append($('<button value="page" id=\"' + currentPage + '\" onClick="buttonClicked(this)">' + currentPage + '</button>'));
+        $('#pages').append($('<button value="page" id="' + currentPage + '" onClick="buttonClicked(this)">' + currentPage + '</button>'));
     } else {
         currentPage = pages.indexOf(AWS_Data.Marker) + 1;
     }
@@ -246,7 +246,10 @@ function updateStatus(code, color, loader) {
 
     switch (code) {
     case 'noAlbums':
-        statusDiv.append($('<p>Opps! looks like you dont have access to any albums!<br>please login using a different &nbsp Google ID &nbsp or contact the admin at &nbsp <a id="email"> shadow.on.fire@gmail.com </a></p>'));
+        statusDiv.append($('<p>Opps! looks like you dont have access to any albums!<br>please login using a different &nbsp Google ID &nbsp or contact the admin at &nbsp <a id="email"> shadow.on.fire@gmail.com </a><br><br>(You are logged in as &nbsp<a id="email">'+primaryEmail+' </a>)</p>'));
+            //statusDiv.append($('<p>Opps! looks like you dont have access to any albums!<br><br>You are logged in as &nbsp<a id="email">'));
+            //statusDiv.append($(primaryEmail));
+            //statusDiv.append($(' </a><br><br>please login using a different &nbsp Google ID &nbsp or contact the admin at &nbsp <a id="email"> shadow.on.fire@gmail.com </a></p>'));
         break;
     case 'loadError':
         statusDiv.append($('<p>Could not load objects from S3!,<br>Please reload the page or contact the &nbsp <a id="email" href="mailto:shadow.on.fire@gmail.com"> Admin </a></p>'));

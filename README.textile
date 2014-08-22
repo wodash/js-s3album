@@ -1,4 +1,4 @@
-Copy the folder in your webserver or even in a S3 bucket and access the index file
+Copy the folder in your webserver or even in a S3 bucket and access the s3album.html file
 
 All configurations are in the s3album.js file 
 
