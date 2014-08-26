@@ -1,6 +1,6 @@
 /* Common Settings (Start)*/
 
-@import url(http://fonts.googleapis.com/css?family=Josefin+Slab:400,700italic);
+@import url(https://fonts.googleapis.com/css?family=Josefin+Slab:400,700italic);
  *,
 *:after,
 *::before {
@@ -30,7 +30,7 @@ body {
 .expandable-panel-content {
     display: block;
     overflow: hidden;
-    margin-top: -999;
+    margin-top: -999px;
 }
 button {
     border: none;
@@ -71,6 +71,7 @@ hr {
 }
 p{
     font-size: 1.4em;
+    line-height: 1.4em;
 }
 /* Common Settings (End)*/
 
@@ -79,6 +80,7 @@ p{
 #albumListContainer {
     width: 100%;
     display: none;
+    float: left;
 }
 .column {
     width: 100%;

@@ -17,25 +17,36 @@ var primaryEmail;
 
 /*-------------------- Google Login code  (Start)----------------------*/
 
-(function () {
-    var po = document.createElement('script');
-    po.type = 'text/javascript';
-    po.async = true;
-    //po.src = 'https://apis.google.com/js/client:plusone.js';
-    po.src = 'https://plus.google.com/js/client:plusone.js';
-    var s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(po, s);
+/* Executed when the APIs finish loading */
+function render() {
+   
+    console.log(navigator.userAgent);
+    $('#debug').text(navigator.userAgent+' Rendereing google sign in button');
+    // Additional params including the callback, the rest of the params will
+    // come from the page-level configuration.
+    var additionalParams = {
+        'callback': signinCallback
+    };
 
-})();
+    // Attach a click listener to a button to trigger the flow.
+    var signinButton = document.getElementById('signinButton');
+    signinButton.addEventListener('click', function () {
+        $('#debug').text('adding event listner to google sign in button');
+        gapi.auth.signIn(additionalParams); // Will use page level configuration
+    });
+}
 
 function signinCallback(authResult) {
     if (authResult['status']['signed_in']) {
-        // Update the app to reflect a signed in user
-        // Hide the sign-in button now that the user is authorized, for example:
-        document.getElementById('signinButton').setAttribute('style', 'display: none');
-        document.getElementById('signoffButton').setAttribute('style', 'display: true');
-        Google_App_Token = authResult.id_token;
-        gapi.client.load('plus', 'v1', gplusProfile);
+        if (authResult['status']['method'] == 'PROMPT') {
+            $('#debug').text('Successful Login');
+            // Update the app to reflect a signed in user
+            // Hide the sign-in button now that the user is authorized, for example:
+            document.getElementById('signinButton').setAttribute('style', 'display: none');
+            document.getElementById('signoffButton').setAttribute('style', 'display: true');
+            Google_App_Token = authResult.id_token;
+            gapi.client.load('plus', 'v1', gplusProfile);
+        }
     } else {
         // Update the app to reflect a signed out user
         // Possible error values:
@@ -47,7 +58,7 @@ function signinCallback(authResult) {
 }
 
 function gplusProfile() {
-
+    $('#debug').text('Getting profile data');
     gapi.client.plus.people.get({
         'userId': 'me'
     }).execute(function (profile) {
@@ -67,6 +78,7 @@ function gplusProfile() {
         welcomePage();
     }, 0);
     setTimeout(function () {
+        $('#debug').text('loading albums');
         loadAlbums();
     }, 1000);
 
@@ -77,6 +89,7 @@ function gplusProfile() {
 /*-------------------- Code for AWS (Start)----------------------*/
 
 function loadAlbums() {
+    $('#debug').text('Creating AWS Config');
     AWS.config.credentials = new AWS.WebIdentityCredentials({
         RoleArn: AWS_RoleArn,
         WebIdentityToken: Google_App_Token
@@ -87,6 +100,7 @@ function loadAlbums() {
             Bucket: AWS_BucketName
         }
     });
+    $('#debug').text('Getting Album list');
     AWS_Bucket_Obj.getSignedUrl('getObject', {
         Bucket: AWS_BucketName,
         Key: 'users/' + primaryEmail + '.xml', // Location in the bucket where we keep the user specific album access XMLs
@@ -95,14 +109,22 @@ function loadAlbums() {
             console.log(err, err.stack); // an error occurred
             updateStatus('error', 'red', false);
         } else {
+            $('#debug').text('Recieved album list');
             var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("GET", url, false);
+            xmlhttp.open("GET", url, true);
             xmlhttp.send();
-            var albumXML = xmlhttp.responseXML;
+            xmlhttp.onreadystatechange = function () {
+                var albumXML = xmlhttp.responseXML;
+                // Make an (sudo) async function call
+                setTimeout(function () {
+                    xmlParser(albumXML);
+                }, 0);
+            }
+            /*var albumXML = xmlhttp.responseXML;
             // Make an (sudo) async function call
             setTimeout(function () {
                 xmlParser(albumXML);
-            }, 0);
+            }, 0);*/
         }
     });
 }
@@ -141,6 +163,7 @@ function getObjectUrl(key) {
 /*-------------------- Code for Albums (Start)----------------------*/
 
 function xmlParser(xmlDoc) {
+    $('#debug').text('Parsing album list');
     var node = xmlDoc.getElementsByTagName("album");
     var len = node.length;
     while (len > 0) {
@@ -246,10 +269,10 @@ function updateStatus(code, color, loader) {
 
     switch (code) {
     case 'noAlbums':
-        statusDiv.append($('<p>Opps! looks like you dont have access to any albums!<br>please login using a different &nbsp Google ID &nbsp or contact the admin at &nbsp <a id="email"> shadow.on.fire@gmail.com </a><br><br>(You are logged in as &nbsp<a id="email">'+primaryEmail+' </a>)</p>'));
-            //statusDiv.append($('<p>Opps! looks like you dont have access to any albums!<br><br>You are logged in as &nbsp<a id="email">'));
-            //statusDiv.append($(primaryEmail));
-            //statusDiv.append($(' </a><br><br>please login using a different &nbsp Google ID &nbsp or contact the admin at &nbsp <a id="email"> shadow.on.fire@gmail.com </a></p>'));
+        statusDiv.append($('<p>Oops! looks like you dont have access to any albums!<br>please login using a different &nbsp Google ID &nbsp or contact the admin at &nbsp <a id="email"> shadow.on.fire@gmail.com </a><br><br>(You are logged in as &nbsp<a id="email">' + primaryEmail + ' </a>)</p>'));
+        //statusDiv.append($('<p>Opps! looks like you dont have access to any albums!<br><br>You are logged in as &nbsp<a id="email">'));
+        //statusDiv.append($(primaryEmail));
+        //statusDiv.append($(' </a><br><br>please login using a different &nbsp Google ID &nbsp or contact the admin at &nbsp <a id="email"> shadow.on.fire@gmail.com </a></p>'));
         break;
     case 'loadError':
         statusDiv.append($('<p>Could not load objects from S3!,<br>Please reload the page or contact the &nbsp <a id="email" href="mailto:shadow.on.fire@gmail.com"> Admin </a></p>'));
