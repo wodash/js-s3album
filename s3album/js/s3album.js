@@ -14,6 +14,7 @@ var currentAlbum;
 var marker;
 var currentPage;
 var primaryEmail;
+var Google_ID;
 
 /*-------------------- Google Login code  (Start)----------------------*/
 
@@ -45,6 +46,7 @@ function signinCallback(authResult) {
             document.getElementById('signinButton').setAttribute('style', 'display: none');
             document.getElementById('signoffButton').setAttribute('style', 'display: true');
             Google_App_Token = authResult.id_token;
+            console.log(authResult);
             gapi.client.load('plus', 'v1', gplusProfile);
         }
     } else {
@@ -62,6 +64,8 @@ function gplusProfile() {
     gapi.client.plus.people.get({
         'userId': 'me'
     }).execute(function (profile) {
+        //console.log(profile.id);
+        Google_ID = profile.id;
         for (var i = 0; i < profile.emails.length; i++) {
             if (profile.emails[i].type === 'account')
                 primaryEmail = profile.emails[i].value;
@@ -103,7 +107,7 @@ function loadAlbums() {
     $('#debug').text('Getting Album list');
     AWS_Bucket_Obj.getSignedUrl('getObject', {
         Bucket: AWS_BucketName,
-        Key: 'users/' + primaryEmail + '.xml', // Location in the bucket where we keep the user specific album access XMLs
+        Key: 'users/' + primaryEmail + '_' + Google_ID +'.xml', // Location in the bucket where we keep the user specific album access XMLs
     }, function (err, url) {
         if (err) {
             console.log(err, err.stack); // an error occurred
@@ -269,7 +273,7 @@ function updateStatus(code, color, loader) {
 
     switch (code) {
     case 'noAlbums':
-        statusDiv.append($('<p>Oops! looks like you dont have access to any albums!<br>please login using a different &nbsp Google ID &nbsp or contact the admin at &nbsp <a id="email"> shadow.on.fire@gmail.com </a><br><br>(You are logged in as &nbsp<a id="email">' + primaryEmail + ' </a>)</p>'));
+        statusDiv.append($('<p>Oops! looks like you dont have access to any albums!<br>please login using a different &nbsp Google ID &nbsp or contact the admin at &nbsp <a id="email"> shadow.on.fire@gmail.com </a><br><br><p style="font-size: 70%">(Be sure to provide both your Google ID &nbsp<a id="email">' + primaryEmail + ' </a> and CODE: &nbsp<a id="email">' + Google_ID + '  to the admin</a>)</p></p>'));
         //statusDiv.append($('<p>Opps! looks like you dont have access to any albums!<br><br>You are logged in as &nbsp<a id="email">'));
         //statusDiv.append($(primaryEmail));
         //statusDiv.append($(' </a><br><br>please login using a different &nbsp Google ID &nbsp or contact the admin at &nbsp <a id="email"> shadow.on.fire@gmail.com </a></p>'));
